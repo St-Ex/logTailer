@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <title>Indigo log reader</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="public/main.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul id="envChoice" class="nav navbar-nav"></ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <input id="logRegex" type="text" placeholder="Regex" class="form-control navbar-form">
+                    </li>
+                    <li id="log4jCtrl" style="display: none;">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-success active navbar-btn">
+                                <input name="op" type="radio" id="logLvlBut0" checked>DEBUG
+                            </label>
+                            <label class="btn btn-info navbar-btn">
+                                <input name="op" type="radio" id="logLvlBut1">INFO
+                            </label>
+                            <label class="btn btn-warning navbar-btn">
+                                <input name="op" type="radio" id="logLvlBut2">WARN
+                            </label>
+                            <label class="btn btn-danger navbar-btn">
+                                <input name="op" type="radio" id="logLvlBut3">ERROR
+                            </label>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="tail" style="margin-top:30px"></div>
+    <div class="row">
+        <button id="play" onclick="connect()" type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>
+        <button id="stop" onclick="disconnect()" type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-stop" aria-hidden="true"></span></button>      
+        <label id="info"></label>
+    </div>
+
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="/public/app.js"></script>
+</body>
+
+</html>
