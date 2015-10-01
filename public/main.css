@@ -6,6 +6,10 @@
    #info {
        font-weight: bold;
    }
+   #tail {
+       margin-top: 30px;
+       margin-bottom: 30px;
+   }
    .noLog {
        margin-top: 0;
        margin-bottom: 0;

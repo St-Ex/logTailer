@@ -43,12 +43,14 @@
         </div>
     </nav>
 
-    <div id="tail" style="margin-top:30px"></div>
-    <div class="row">
-        <button id="play" onclick="connect()" type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>
-        <button id="stop" onclick="disconnect()" type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-stop" aria-hidden="true"></span></button>      
-        <label id="info"></label>
-    </div>
+    <div id="tail"></div>
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+        <div class="container-fluid">
+            <button id="play" onclick="connect()" type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>
+            <button id="stop" onclick="disconnect()" type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-stop" aria-hidden="true"></span></button>
+            <label id="info"></label>
+        </div>
+    </nav>
 
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
