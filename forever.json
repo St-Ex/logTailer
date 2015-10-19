@@ -1,12 +1,12 @@
 {
-    // Comments are supported
-    "uid": "logTailer",
-    "append": true,
-    "watch": false,
-    "script": "logTailer.js",
-    "sourceDir": "/opt/application/node/logTailer",
-    "workingDir":"/opt/application/node/logTailer",
-    "number":1000,
-    "l":"/opt/application/node/logTailer/forever.log",
-    "path":"/opt/application/node/logTailer/"
+  // Comments are supported
+  "uid": "logTailer",
+  "append": true,
+  "watch": false,
+  "script": "logTailer.js",
+  "sourceDir": "/opt/application/node/logTailer",
+  "workingDir": "/opt/application/node/logTailer",
+  "number": 1000,
+  "l": "/opt/application/node/logTailer/forever.log",
+  "path": "/opt/application/node/logTailer/"
 }

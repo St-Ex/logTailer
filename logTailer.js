@@ -1,5 +1,5 @@
 var http = require('http'),
-    io = require('socket.io'),
+    Io = require('socket.io'),
     fs = require('fs'),
     Tail = require('tail').Tail,
     tails = [];
@@ -24,19 +24,19 @@ server = http.createServer(function (req, res) {
     } else {
         res.writeHead(200, {
             'Content-Type': 'text/html'
-        })
+        });
         fs.readFile(__dirname + '/public/index.html', function (err, data) {
             res.write(data, 'utf8');
             res.end();
         });
     }
 
-})
+});
 server.listen(9020, '0.0.0.0');
 
 // -- Setup Socket.IO ---------------------------------------------------------
 
-var io = io.listen(server);
+var io = Io.listen(server);
 
 function sent(url, type, data) {
     io.of(url).emit(type, data);
@@ -72,7 +72,7 @@ function closeTail(file) {
     if (tails[file.url] != null) {
         var nbConnected = io.of(file.url).connected;
         if (Object.keys(nbConnected).length === 0) {
-            console.log("Last client disconnected, closing tail.")
+            console.log("Last client disconnected, closing tail.");
             tails[file.url].unwatch();
             tails[file.url] = null;
         }
@@ -91,7 +91,7 @@ function initTail(file) {
             closeTail(file);
         })
     });
-};
+}
 
 // Loading config
 function loadConf() {
