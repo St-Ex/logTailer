@@ -2,41 +2,53 @@ var http = require('http'),
     Io = require('socket.io'),
     fs = require('fs'),
     Tail = require('tail').Tail,
-    tails = [];
+    tails = [],
+    bodyParser = require('body-parser'),
+    express = require('express'),
+    app = express();
 
-// -- Node.js Server ----------------------------------------------------------
+var io;
 
-server = http.createServer(function (req, res) {
+// -- Server ----------------------------------------------------------
+app.use(bodyParser.json());
+app.post("/toast/all", function (req, res) {
+    try {
+        var toast = {
+            title: req.body.title,
+            message: req.body.message,
+            level: (req.body.level ? req.body.level : info)
+        };
 
-    if (req.url.indexOf("public") > -1) {
-        var filename = req.url.substr(req.url.lastIndexOf('/') + 1);
-        fs.readFile(__dirname + '/public/' + filename, function (err, data) {
-            if (err) {
-                res.status(404).send('Not found');
-            } else {
-                res.writeHead(200, {
-                    'Content-Type': "text/" + filename.substr(filename.lastIndexOf('.') + 1)
-                });
-                res.write(data, 'utf8');
-                res.end();
-            }
-        });
-    } else {
-        res.writeHead(200, {
-            'Content-Type': 'text/html'
-        });
-        fs.readFile(__dirname + '/public/index.html', function (err, data) {
-            res.write(data, 'utf8');
-            res.end();
-        });
+        for (var url in tails) {
+            io.of(url).emit('toast', toast);
+        };
+
+        res.sendStatus(200);
+    } catch (e) {
+        console.error(e);
+        res.sendStatus(500);
     }
-
 });
-server.listen(9020, '0.0.0.0');
+
+console.log(__dirname);
+app.use('/public', express.static(__dirname + '/public'));
+
+app.use(function (req, res) {
+    res.sendFile('./public/index.html', {
+        root: __dirname
+    });
+});
+
+var server = app.listen(9020, function () {
+    var host = server.address().address;
+    var port = server.address().port;
+
+    console.log('Server running at http://%s:%s, connect with a browser to see tail output', host, port);
+});
 
 // -- Setup Socket.IO ---------------------------------------------------------
 
-var io = Io.listen(server);
+io = Io.listen(server);
 
 function sent(url, type, data) {
     io.of(url).emit(type, data);
@@ -96,11 +108,7 @@ function initTail(file) {
 // Loading config
 function loadConf() {
     fs.readFile(__dirname + '/public/conf.json', function (err, data) {
-        var envs = [];
-
-        // Init all files
-        envs = JSON.parse(data).envs;
-        envs.forEach(function (env) {
+        JSON.parse(data).envs.forEach(function (env) {
             env.files.forEach(function (ref) {
                 initTail(ref);
             });
@@ -109,5 +117,3 @@ function loadConf() {
 }
 
 loadConf();
-
-console.log('Server running at http://0.0.0.0:9020/, connect with a browser to see tail output');

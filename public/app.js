@@ -151,6 +151,27 @@
          window.scrollTo(0, document.body.scrollHeight);
      });
 
+     socket.on('toast', function (data) {
+         toastr.options = {
+             "closeButton": false,
+             "debug": false,
+             "newestOnTop": true,
+             "progressBar": false,
+             "positionClass": "toast-bottom-right",
+             "preventDuplicates": false,
+             "onclick": null,
+             "showDuration": "300",
+             "hideDuration": "1000",
+             "timeOut": "0",
+             "extendedTimeOut": "1000",
+             "showEasing": "swing",
+             "hideEasing": "linear",
+             "showMethod": "fadeIn",
+             "hideMethod": "fadeOut"
+         };
+         toastr[data.level](data.message, data.title);
+     });
+
      // Managing error comming from server
      socket.on('error', function (data) {
          disconnect(data);
