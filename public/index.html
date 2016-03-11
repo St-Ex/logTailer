@@ -1,56 +1,63 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
     <title>Indigo log reader</title>
 
     <!-- Latest compiled and minified CSS -->
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/public/bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/public/bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/public/main.css">
     <link rel="stylesheet" href="/public/bower_components/toastr/toastr.min.css">
-</head>
+  </head>
 
-<body>
+  <body>
     <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container-fluid">
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul id="envChoice" class="nav navbar-nav"></ul>
-
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <input id="logRegex" type="text" placeholder="Regex" class="form-control navbar-form">
-                    </li>
-                    <li id="log4jCtrl" style="display: none;">
-                        <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-success active navbar-btn">
-                                <input name="op" type="radio" id="logLvlBut0" checked>DEBUG
-                            </label>
-                            <label class="btn btn-info navbar-btn">
-                                <input name="op" type="radio" id="logLvlBut1">INFO
-                            </label>
-                            <label class="btn btn-warning navbar-btn">
-                                <input name="op" type="radio" id="logLvlBut2">WARN
-                            </label>
-                            <label class="btn btn-danger navbar-btn">
-                                <input name="op" type="radio" id="logLvlBut3">ERROR
-                            </label>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+      <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul id="envChoice" class="nav navbar-nav"></ul>
         </div>
+      </div>
     </nav>
 
     <div id="tail"></div>
     <nav class="navbar navbar-default navbar-fixed-bottom">
-        <div class="container-fluid">
-            <button id="play" onclick="connect()" type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>
-            <button id="stop" onclick="disconnect()" type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-stop" aria-hidden="true"></span></button>
-            <label id="info"></label>
-        </div>
+      <div class="container-fluid">
+        <button id="play" onclick="connect()" type="button" class="btn btn-default navbar-btn">
+          <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+        </button>
+        <button id="stop" onclick="disconnect()" type="button" class="btn btn-default navbar-btn">
+          <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
+        </button>
+        <label id="info"></label>
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <input id="logRegex" type="text" placeholder="Regex" class="form-control navbar-form">
+          </li>
+          <li id="log4jCtrl" style="display: none;">
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn navbar-btn loglv0">
+                <input name="op" type="radio" id="logLvlBut0">TRACE
+              </label>
+              <label class="btn navbar-btn loglv1">
+                <input name="op" type="radio" id="logLvlBut1">DEBUG
+              </label>
+              <label class="btn navbar-btn active loglv2">
+                <input name="op" type="radio" id="logLvlBut2" checked>INFO
+              </label>
+              <label class="btn navbar-btn loglv3">
+                <input name="op" type="radio" id="logLvlBut3">WARN
+              </label>
+              <label class="btn navbar-btn loglv4">
+                <input name="op" type="radio" id="logLvlBut4">ERROR
+              </label>
+            </div>
+          </li>
+        </ul>
+      </div>
     </nav>
 
     <script src="/public/bower_components/jquery/dist/jquery.min.js"></script>
@@ -58,6 +65,6 @@
     <script src="/public/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/public/app.js"></script>
     <script src="/public/bower_components/toastr/toastr.min.js"></script>
-</body>
+  </body>
 
 </html>

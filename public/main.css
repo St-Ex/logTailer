@@ -1,34 +1,43 @@
-   body {
-       color: #1a2c37;
-       font-family: 'Helvetica', sans-serif;
-       padding: 2em;
-   }
-   #info {
-       font-weight: bold;
-   }
-   #tail {
-       margin-top: 30px;
-       margin-bottom: 30px;
-   }
-   .noLog {
-       margin-top: 0;
-       margin-bottom: 0;
-   }
-   .loglv0 {
-       background-color: #C9FFCB;
-   }
-   .loglv1 {
-       background-color: #CCF2FF;
-   }
-   .loglv2 {
-       background-color: #FFE5C9;
-   }
-   .loglv3 {
-       background-color: #FFCCCC;
-   }
-   .logLVL {
-       font-weight: bold;
-   }
-   .logDate {
-       font-style: italic;
-   }
+body {
+  color: #1a2c37;
+  font-family: 'Roboto', sans-serif;
+  padding: 2em;
+}
+#info {
+  font-weight: bold;
+}
+#tail {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+.active {
+  font-weight: bold;
+}
+.navbar-right {
+  margin-right: 0px;
+}
+.noLog {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.loglv0 {
+  background-color: #E1BEE7;
+}
+.loglv1 {
+  background-color: #C8E6C9;
+}
+.loglv2 {
+  background-color: #B3E5FC;
+}
+.loglv3 {
+  background-color: #FFCCBC;
+}
+.loglv4 {
+  background-color: #EF9A9A;
+}
+.logLVL {
+  font-weight: bold;
+}
+.logDate {
+  font-style: italic;
+}

@@ -8,7 +8,7 @@ export PATH=/opt/application/node/node-v0.12.7-linux-x64/bin/:$PATH
 export WHERE=$(dirname $0)
 [ "${WHERE}" = "." ] && export WHERE=${PWD}
 
-[ "$#" -eq 1 ] || die "1 argument required, $# provided"
+[ "$#" -eq 1 ] || die "1 argument required, $# provided. Possible arg are : start, stop"
 
 if [ "$1" == "start" ]
 then

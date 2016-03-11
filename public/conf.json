@@ -1,92 +1,12 @@
 {
-    "envs": [
-        {
-            "name": "Int. Cont.",
-            "host":"http://10.238.102.34:9020",
-            "files": [{
-                    "name": "Log applicatif",
-                    "url": "/IC/LOG",
-                    "filePath": "/opt/application/indofp0/current/tomcat/00/logs/indigo.log",
-                    "log4j":true
-                },
-                {
-                    "name": "Log webservices",
-                    "url": "/IC/WS",
-                    "filePath": "/opt/application/indofp0/current/tomcat/00/logs/webservicesLog.log",
-                    "log4j":true
-                },
-                {
-                    "name": "Log tomcat",
-                    "url": "/IC/CAT",
-                    "filePath": "/opt/application/indofp0/current/tomcat/00/logs/catalina.out",
-                    "log4j":true
-
-                }]
-        },
-        {
-            "name": "Qualif",
-            "host":"http://10.238.102.34:9020",
-            "files": [{
-                    "name": "Log applicatif",
-                    "url": "/QUALIF/LOG",
-                    "filePath": "/opt/application/indofp1/current/tomcat/00/logs/indigo.log",
-                    "log4j":true
-                },
-                {
-                    "name": "Log webservices",
-                    "url": "/QUALIF/WS",
-                    "filePath": "/opt/application/indofp1/current/tomcat/00/logs/webservicesLog.log",
-                    "log4j":true
-                },
-                {
-                    "name": "Log tomcat",
-                    "url": "/QUALIF/CAT",
-                    "filePath": "/opt/application/indofp1/current/tomcat/00/logs/catalina.out",
-                    "log4j":true
-                }]
-        },
-        {
-            "name": "Démo",
-            "host":"http://10.238.102.28:9020",
-            "files": [{
-                    "name": "Log applicatif",
-                    "url": "/DEMO/LOG",
-                    "filePath": "/opt/application/indofp2/current/tomcat/00/logs/indigo.log",
-                    "log4j":true
-                },
-                {
-                    "name": "Log webservices",
-                    "url": "/DEMO/WS",
-                    "filePath": "/opt/application/indofp2/current/tomcat/00/logs/webservicesLog.log",
-                    "log4j":true
-                },
-                {
-                    "name": "Log tomcat",
-                    "url": "/DEMO/CAT",
-                    "filePath": "/opt/application/indofp2/current/tomcat/00/logs/catalina.out",
-                    "log4j":true
-                }]
-            },
-        {
-            "name": "Intégration",
-            "host":"http://10.238.102.28:9020",
-            "files": [{
-                    "name": "Log applicatif",
-                    "url": "/INT/LOG",
-                    "filePath": "/opt/application/indofp3/current/tomcat/00/logs/indigo.log",
-                    "log4j":true
-                },
-                {
-                    "name": "Log webservices",
-                    "url": "/INT/WS",
-                    "filePath": "/opt/application/indofp3/current/tomcat/00/logs/webservicesLog.log",
-                    "log4j":true
-                },
-                {
-                    "name": "Log tomcat",
-                    "url": "/INT/CAT",
-                    "filePath": "/opt/application/indofp3/current/tomcat/00/logs/catalina.out",
-                    "log4j":true
-                }]
-        }]
+  "envs": [{
+    "name": "Env name",
+    "host": "http://localhost:9020",
+    "files": [{
+      "name": "Log applicatif",
+      "url": "/LOCAL/LOG",
+      "filePath": "./logTailer.log",
+      "log4j": true
+    }]
+  }]
 }
