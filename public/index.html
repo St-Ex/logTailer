@@ -3,68 +3,95 @@
 
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-    <title>Indigo log reader</title>
+    <title>BeLog</title>
 
-    <!-- Latest compiled and minified CSS -->
-    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/public/bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/public/bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="/public/main.css">
+    <!-- Material Design fonts -->
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <!-- Material Design for Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.rawgit.com/fezvrasta/bootstrap-material-design/v4-dist/css/bootstrap-material-design.css">
+
+    <!-- toastr -->
     <link rel="stylesheet" href="/public/bower_components/toastr/toastr.min.css">
+
+    <!-- LogTailer -->
+    <link rel="stylesheet" href="/public/main.css">
   </head>
 
   <body>
-    <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container-fluid">
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul id="envChoice" class="nav navbar-nav"></ul>
-        </div>
-      </div>
+    <nav class="navbar navbar-fixed-top navbar-light bg-faded">
+      <ul id="envChoice" class="nav nav-tabs" roles="tablist"></ul>
     </nav>
 
     <div id="tail"></div>
-    <nav class="navbar navbar-default navbar-fixed-bottom">
-      <div class="container-fluid">
-        <button id="play" onclick="connect()" type="button" class="btn btn-default navbar-btn">
-          <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
-        </button>
-        <button id="stop" onclick="disconnect()" type="button" class="btn btn-default navbar-btn">
-          <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
-        </button>
-        <label id="info"></label>
-        <ul class="nav navbar-nav navbar-right">
-          <li>
-            <input id="logRegex" type="text" placeholder="Regex" class="form-control navbar-form">
-          </li>
-          <li id="log4jCtrl" style="display: none;">
-            <div class="btn-group" data-toggle="buttons">
-              <label class="btn navbar-btn loglv0">
-                <input name="op" type="radio" id="logLvlBut0">TRACE
-              </label>
-              <label class="btn navbar-btn loglv1">
-                <input name="op" type="radio" id="logLvlBut1">DEBUG
-              </label>
-              <label class="btn navbar-btn active loglv2">
-                <input name="op" type="radio" id="logLvlBut2" checked>INFO
-              </label>
-              <label class="btn navbar-btn loglv3">
-                <input name="op" type="radio" id="logLvlBut3">WARN
-              </label>
-              <label class="btn navbar-btn loglv4">
-                <input name="op" type="radio" id="logLvlBut4">ERROR
-              </label>
-            </div>
-          </li>
-        </ul>
+
+    <nav id="controlbar" class="navbar navbar-fixed-bottom navbar-light bg-faded">
+      <button id="play" onclick="connect()" type="button" class="btn btn-default" title="Open connection">
+        <i class="material-icons">swap_vert</i>
+      </button>
+      <button id="stop" onclick="disconnect()" type="button" class="btn btn-default" title="Close connection">
+        <i class="material-icons">stop</i>
+      </button>
+      <button id="pause" onclick="pauseScroll()" type="button" class="btn btn-default" title="Pause auto-scroll">
+        <i class="material-icons">lock</i>
+      </button>
+      <button id="resume" onclick="resumeScroll()" type="button" class="btn btn-default" title="Resume auto-scroll">
+        <i class="material-icons">lock_open</i>
+      </button>
+      <a id="download" href="#" type="button" class="btn btn-default" title="Download full file" download>
+        <i class="material-icons">file_download</i>
+      </a>
+      <button id ="wrap" onclick="wrapLine(true)" type="button" class="btn btn-default" title="Wrap text">
+        <i class="material-icons">format_align_justify</i>
+      </button>
+      <button id ="unwrap" onclick="wrapLine(false)" type="button" class="btn btn-default" title="Unwrap text">
+        <i class="material-icons">view_agenda</i>
+      </button>
+
+      <div id="info"></div>
+
+      <div class="pull-xs-right">
+        <input id="logRegex" type="text" placeholder="Regex" class="form-control">
+      </div>
+
+      <div id="log4jCtrl" class="logcmds pull-xs-right">
+        <div class="btn-group" data-toggle="buttons">
+          <label class="btn btn-primary loglv0" onclick="changeLogLevel(0)">
+            <input type="radio" id="logLvlBut0" autocomplete="off">TRACE
+          </label>
+          <label class="btn btn-primary loglv1" onclick="changeLogLevel(1)">
+            <input type="radio" id="logLvlBut1" autocomplete="off">DEBUG
+          </label>
+          <label class="btn btn-primary loglv2 active" onclick="changeLogLevel(2)">
+            <input type="radio" id="logLvlBut2" autocomplete="off" checked>INFO
+          </label>
+          <label class="btn btn-primary loglv3" onclick="changeLogLevel(3)">
+            <input type="radio" id="logLvlBut3" autocomplete="off">WARN
+          </label>
+          <label class="btn btn-primary loglv4" onclick="changeLogLevel(4)">
+            <input type="radio" id="logLvlBut4" autocomplete="off">ERROR
+          </label>
+        </div>
       </div>
     </nav>
-
-    <script src="/public/bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/public/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="/public/app.js"></script>
-    <script src="/public/bower_components/toastr/toastr.min.js"></script>
   </body>
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+  <script src="https://cdn.rawgit.com/HubSpot/tether/v1.1.1/dist/js/tether.min.js"></script>
+  <script src="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/js/bootstrap.min.js"></script>
+  <script src="https://cdn.rawgit.com/fezvrasta/bootstrap-material-design/v4-dist/js/bootstrap-material-design.iife.min.js"></script>
+
+  <script src="/public/bower_components/toastr/toastr.min.js"></script>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/public/app.js"></script>
+
+  <script>
+    $('body').bootstrapMaterialDesign()
+  </script>
+</body>
 </html>

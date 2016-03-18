@@ -45,9 +45,17 @@ app.post("/toast/all", function(req, res) {
 loadConf(function(file) {
   var url = file.url + "/FULL";
   console.log("Adding full file route " + url);
+  var options = {
+    headers: {
+      'x-timestamp': Date.now(),
+      'x-sent': true,
+      'content-disposition': 'attachment; filename="' + file.filePath.substring(file.filePath.lastIndexOf('/') + 1) + '"'
+    }
+  };
   app.get(url, function(req, res) {
-    res.sendFile(file.filePath);
+    res.sendFile(file.filePath, options);
   });
+
   console.log("Adding tailer route " + file.url);
   app.get(file.url, function(req, res) {
     res.sendFile('./public/index.html', {
@@ -58,10 +66,10 @@ loadConf(function(file) {
 
 app.use('/public', express.static(__dirname + '/public'));
 
-app.get('/',function (req, res) {
-    res.sendFile('./public/index.html', {
-        root: __dirname
-    });
+app.get('/', function(req, res) {
+  res.sendFile('./public/index.html', {
+    root: __dirname
+  });
 });
 
 var server = app.listen(9020, function() {

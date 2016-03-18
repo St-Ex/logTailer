@@ -1,14 +1,67 @@
 body {
   color: #1a2c37;
   font-family: 'Roboto', sans-serif;
-  padding: 2em;
+  background-color: #E0E0E0;
+}
+p {
+  display: inline-block;
+  align-items: center;
+  margin: 0 0 4px 0;
+  padding: 0 5px 0 5px;
+}
+.material-icons {
+  vertical-align: middle;
+}
+.nav-tabs .nav-link, .nav-pills .nav-link {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.navbar .btn, .navbar .btn-group {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 #info {
   font-weight: bold;
 }
 #tail {
-  margin-top: 30px;
-  margin-bottom: 30px;
+  margin-top: 55px;
+  margin-bottom: 55px;
+}
+#tail.line p {
+  white-space: nowrap;
+}
+#tail p.nomatch {
+  display: none !important;
+}
+#tail.lv0 p.loglv0, #tail.lv0 p.loglv1, #tail.lv0 p.loglv2, #tail.lv0 p.loglv3, #tail.lv0 p.loglv4 {
+  display: inline-block;
+}
+#tail.lv1 p.loglv0 {
+  display: none;
+}
+#tail.lv1 p.loglv1, #tail.lv1 p.loglv2, #tail.lv1 p.loglv3, #tail.lv1 p.loglv4 {
+  display: inline-block;
+}
+#tail.lv2 p.loglv0, #tail.lv2 p.loglv1 {
+  display: none;
+}
+#tail.lv2 p.loglv2, #tail.lv2 p.loglv3, #tail.lv2 p.loglv4 {
+  display: inline-block;
+}
+#tail.lv3 p.loglv0, #tail.lv3 p.loglv1, #tail.lv3 p.loglv2 {
+  display: none;
+}
+#tail.lv3 p.loglv3, #tail.lv3 p.loglv4 {
+  display: inline-block;
+}
+#tail.lv4 p.loglv0, #tail.lv4 p.loglv1, #tail.lv4 p.loglv2, #tail.lv4 p.loglv3 {
+  display: none;
+}
+#tail.lv4 p.loglv4 {
+  display: inline-block;
+}
+#tail.lv0 p.loglv0, #tail.lv0 p.loglv1, #tail.lv0 p.loglv2, #tail.lv0 p.loglv3, #tail.lv0 p.loglv4 {
+  display: inline-block;
 }
 .active {
   font-weight: bold;
@@ -20,19 +73,19 @@ body {
   margin-top: 0;
   margin-bottom: 0;
 }
-.loglv0 {
+.loglv0, .logcmds .btn.loglv0.active, .logcmds .btn.loglv0:hover {
   background-color: #E1BEE7;
 }
-.loglv1 {
+.loglv1, .logcmds .btn.loglv1.active, .logcmds .btn.loglv1:hover {
   background-color: #C8E6C9;
 }
-.loglv2 {
+.loglv2, .logcmds .btn.loglv2.active, .logcmds .btn.loglv2:hover {
   background-color: #B3E5FC;
 }
-.loglv3 {
+.loglv3, .logcmds .btn.loglv3.active, .logcmds .btn.loglv3:hover {
   background-color: #FFCCBC;
 }
-.loglv4 {
+.loglv4, .logcmds .btn.loglv4.active, .logcmds .btn.loglv4:hover {
   background-color: #EF9A9A;
 }
 .logLVL {
@@ -40,4 +93,22 @@ body {
 }
 .logDate {
   font-style: italic;
+}
+.logcmds .btn {
+  border-bottom: thick solid;
+}
+.logcmds .btn.loglv0, .logcmds .btn.loglv0:hover {
+  border-color: #E1BEE7;
+}
+.logcmds .btn.loglv1, .logcmds .btn.loglv1:hover {
+  border-color: #C8E6C9;
+}
+.logcmds .btn.loglv2, .logcmds .btn.loglv2:hover {
+  border-color: #B3E5FC;
+}
+.logcmds .btn.loglv3, .logcmds .btn.loglv3:hover {
+  border-color: #FFCCBC;
+}
+.logcmds .btn.loglv4, .logcmds .btn.loglv4:hover {
+  border-color: #EF9A9A;
 }

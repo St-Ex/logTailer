@@ -1,21 +1,27 @@
-'use strict'
+'use strict';
+/*jshint multistr: true */
+/*globals $:false */
+/*globals io:false */
+/*globals toastr:false */
 
 var socket,
   lastLvl = 0,
   lastP = 0,
   lineCount = 0,
   regexPattern = null,
-  lglvl = "2",
-  logPattern = /(.*?)\s+(DEBUG|INFO|WARN|ERROR)+\s+(.*)/,
-  log4jComp = false;
+  lglvl = 2,
+  logPattern = /(.*?)\s+(TRACE|DEBUG|INFO|WARN|ERROR)+\s+(.*)/,
+  log4jComp = false,
+  scrolling = true,
+  line = false;
 
 function safe_tags(str) {
-  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\t/, "&emsp;");
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\t/, '&emsp;');
 }
 
 // Convert log4j log level to int
 function convertLoglvl(log4jLvl) {
-  var lvl = ["TRACE", "DEBUG", "INFO", "WARN", "ERROR"];
+  var lvl = ['TRACE', 'DEBUG', 'INFO', 'WARN', 'ERROR'];
   return lvl.indexOf(log4jLvl);
 }
 
@@ -26,89 +32,89 @@ function connect() {
   } else {
     socket = io.connect(window.location.href);
   }
-
   // GUI modification
-  $("#play").attr("disabled", "disabled");
-  $("#play").addClass("active");
-  $("#stop").removeAttr("disabled");
-  $("#stop").removeClass("active");
+  $('#play').toggle(false);
+  $('#stop').toggle(true);
+  resumeScroll();
+}
+
+// Pause scrolling (but keep receiving data)
+function pauseScroll() {
+  scrolling = false;
+  $('#pause').toggle(false);
+  $('#resume').toggle(true);
+}
+
+// Un Pause scrolling (but keep receiving data)
+function resumeScroll() {
+  scrolling = true;
+  $('#resume').toggle(false);
+  $('#pause').toggle(true);
+  window.scrollTo(0, document.body.scrollHeight);
+}
+
+// Wrap or unwrap line
+function wrapLine(b) {
+  line = b;
+  if (line) {
+    $('#tail').addClass('line');
+  } else {
+    $('#tail').removeClass('line');
+  }
+  $('#wrap').toggle(!line);
+  $('#unwrap').toggle(line);
 }
 
 // Disconnect socket
 function disconnect(message) {
   socket.disconnect();
-  $("#stop").attr("disabled", "disabled");
-  $("#stop").addClass("active");
-  $("#play").removeAttr("disabled");
-  $("#play").removeClass("active");
+  $('#play').toggle(true);
+  $('#stop').toggle(false);
+  resumeScroll();
 
-  $("#tail").append("<pre><span class=\"glyphicon glyphicon-stop\" aria-hidden=\"true\"> </span>" + (message ? message : "Tail stopped.") + "</pre>");
+  $('#tail').append('<p class="always"><i class="material-icons">stop</i> ' + (message ? message : 'Tail stopped.') + '</p>');
   window.scrollTo(0, document.body.scrollHeight);
 }
 
 // Changing log lvl and applying filter
-function loglvl(lvl) {
+function changeLogLevel(lvl) {
+  $('#tail').removeClass('lv' + lglvl);
   lglvl = lvl;
-  $.each($("#tail").find("p"), function(ind, value) {
-    toggleIt(value);
-  });
-  window.scrollTo(0, document.body.scrollHeight);
+  $('#tail').addClass('lv' + lglvl);
 }
 
 // Changing log lvl and applying filter
 function logReg(newRegex) {
   regexPattern = (newRegex ? new RegExp(newRegex) : null);
 
-  $.each($("#tail").find("p"), function(ind, value) {
-    toggleIt(value);
+  $.each($('#tail').find('p'), function(ind, value) {
+    if (regexPattern && !regexPattern.test($(value).text())) {
+      $(value).addClass('nomatch');
+    } else {
+      $(value).removeClass('nomatch');
+    }
   });
   window.scrollTo(0, document.body.scrollHeight);
 }
 
-// Apply change to paragraphe
-function toggleIt(elem) {
-  var b;
-  if (log4jComp) {
-    switch (lglvl) {
-      case "0":
-        b = b || $(elem).hasClass("loglv0");
-      case "1":
-        b = b || $(elem).hasClass("loglv1");
-      case "2":
-        b = b || $(elem).hasClass("loglv2");
-      case "3":
-        b = b || $(elem).hasClass("loglv3");
-      case "4":
-        b = b || $(elem).hasClass("loglv4");
-    }
-  } else {
-    b = true;
-  }
-  if (b && regexPattern) {
-    b = regexPattern.test($(elem).text());
-  }
-  $(elem).toggle(b);
-}
-
 function initEnvs() {
-  $.get(location.protocol + "//" + location.host + "/public/conf.json", function(data, status) {
+  $.get(location.protocol + '//' + location.host + '/public/conf.json', function(data, status) {
     var envs = data.envs,
       n_env = 0;
     envs.forEach(function(env) {
       n_env++;
-      $("#envChoice").append("<li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">" + env.name + "<span class=\"caret\"></span></a><ul id=env" + n_env + " class=\"dropdown-menu\"></ul></li>");
+      $('#envChoice').append(
+        '<li class="nav-item dropdown"><span class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">' + env.name + '</span><div id="env' + n_env + '" class="dropdown-menu"></div></li>');
       env.files.forEach(function(file) {
-        $("#env" + n_env).append("<li><a href=\"" + env.host + file.url + "\">" + file.name + "</a></li>");
-
+        $('#env' + n_env).append('<a class="dropdown-item" href="' + env.host + file.url + '">' + file.name + '</a>');
         if (window.location.href.endsWith(file.url)) {
           log4jComp = file.log4j;
         }
       });
     });
-    $("#log4jCtrl").toggle(log4jComp);
+    $('#log4jCtrl').toggle(log4jComp);
   });
 }
-
 
 // -------------------------------------------------
 // Init
@@ -116,7 +122,7 @@ $(function() {
   connect();
 
   socket.on('connect', function(message) {
-    $("#tail").append("<pre><span class=\"glyphicon glyphicon-play\" aria-hidden=\"true\"> </span>Connected</pre>");
+    $('#tail').append('<p class="always"><i class="material-icons">swap_vert</i> Connected</p>');
     window.scrollTo(0, document.body.scrollHeight);
   });
 
@@ -135,43 +141,48 @@ $(function() {
       // Log4j tag management
       if (res) {
         lastLvl = convertLoglvl(res[2]);
-        var appendStr = "<p id=\"" + lineCount + "\" class=\"row loglv" + lastLvl + "\">" + " <span class=\"logDate\">" + res[1] + "</span> " + "<span class=\"logLVL\">" + res[2] + "</span> " + res[3] + "</p>"
-        $("#tail").append(appendStr);
+        var appendStr =
+          '<p id="' + lineCount + '" class="loglv' + lastLvl + (line ? ' line' : '') + '"><span class="logDate">' + res[1] + '</span><span class="logLVL"> ' + res[2] + ' </span>' + res[3] + '</p>';
+        $('#tail').append(appendStr);
 
         // Saving last linecount
         lastP = lineCount;
       } else {
-        $("#" + lastP).append(data + "<br/>");
+        console.log($('#collapse' + lastP).length);
+        if (!$('#collapse' + lastP).length) {
+          $('#' + lastP).append('<br/><a class="btn btn-primary" data-toggle="collapse" href="#collapse' + lastP+'">See/Hide full stack</a><div id="collapse' + lastP + '" class="panel-collapse collapse" role="tabpanel"></div>');
+        }
+        $('#collapse' + lastP).append(data + '<br/>');
       }
 
     } else {
       // Simple text management
       lastP = lineCount;
-      $("#tail").append("<p id=\"" + lastP + "\" class=\"row noLog\">" + data + "</p>")
+      $('#tail').append('<p id="' + lastP + '" class="noLog' + (line ? ' line' : '') + '">' + data + '</p>');
     }
 
-    // Toggle line or not
-    toggleIt($("#" + lastP));
-    window.scrollTo(0, document.body.scrollHeight);
+    if (scrolling) {
+      window.scrollTo(0, document.body.scrollHeight);
+    }
   });
 
   socket.on('toast', function(data) {
     toastr.options = {
-      "closeButton": false,
-      "debug": false,
-      "newestOnTop": true,
-      "progressBar": false,
-      "positionClass": "toast-bottom-right",
-      "preventDuplicates": false,
-      "onclick": null,
-      "showDuration": "300",
-      "hideDuration": "1000",
-      "timeOut": "0",
-      "extendedTimeOut": "1000",
-      "showEasing": "swing",
-      "hideEasing": "linear",
-      "showMethod": "fadeIn",
-      "hideMethod": "fadeOut"
+      'closeButton': false,
+      'debug': false,
+      'newestOnTop': true,
+      'progressBar': false,
+      'positionClass': 'toast-bottom-right',
+      'preventDuplicates': false,
+      'onclick': null,
+      'showDuration': '300',
+      'hideDuration': '1000',
+      'timeOut': '0',
+      'extendedTimeOut': '1000',
+      'showEasing': 'swing',
+      'hideEasing': 'linear',
+      'showMethod': 'fadeIn',
+      'hideMethod': 'fadeOut'
     };
     toastr[data.level](data.message, data.title);
   });
@@ -184,23 +195,23 @@ $(function() {
 
   // Managing lost connection
   socket.on('connect_timeout', function(reason) {
-    disconnect("Server is unreachable :" + reason);
+    disconnect('Server is unreachable :' + reason);
   });
   socket.on('connect_error', function(reason) {
-    disconnect("Connection lost :" + reason);
-  });
-
-
-
-  // Getting log lvl change from navbar buttons
-  $(document).on('change', 'input:radio[id^="logLvlBut"]', function(event) {
-    loglvl(event.currentTarget.id.slice(-1));
+    disconnect('Connection lost :' + reason);
   });
 
   // Getting regex change from navbar buttons
-  $("#logRegex").change(function() {
-    logReg($("#logRegex").val());
+  $('#logRegex').change(function() {
+    logReg($('#logRegex').val());
   });
 
+  // Download
+  $('#download').attr('href', function() {
+    return window.location.href + '/FULL';
+  });
+
+  wrapLine(line);
+  changeLogLevel(lglvl);
   initEnvs();
 });
