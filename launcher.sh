@@ -4,7 +4,7 @@ die () {
     exit 1
 }
 
-export PATH=/opt/application/node/node-v0.12.7-linux-x64/bin/:$PATH
+export PATH=/opt/application/node/node/bin/:$PATH
 export WHERE=$(dirname $0)
 [ "${WHERE}" = "." ] && export WHERE=${PWD}
 
