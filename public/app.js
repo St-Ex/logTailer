@@ -56,13 +56,14 @@ function resumeScroll() {
 // Wrap or unwrap line
 function wrapLine(b) {
   line = b;
-  if (line) {
-    $('#tail').addClass('line');
-  } else {
-    $('#tail').removeClass('line');
-  }
+  $('#tail').toggleClass('line', line);
   $('#wrap').toggle(!line);
   $('#unwrap').toggle(line);
+}
+
+// Hide line beginning by at
+function toogleAtLines(pId) {
+  $('#collapse' + pId).toggleClass('no-at');
 }
 
 // Disconnect socket
@@ -148,11 +149,10 @@ $(function() {
         // Saving last linecount
         lastP = lineCount;
       } else {
-        console.log($('#collapse' + lastP).length);
         if (!$('#collapse' + lastP).length) {
-          $('#' + lastP).append('<br/><a class="btn btn-primary" data-toggle="collapse" href="#collapse' + lastP+'">See/Hide full stack</a><div id="collapse' + lastP + '" class="panel-collapse collapse" role="tabpanel"></div>');
+          $('#' + lastP).append('<br/><div id="collapse' + lastP + '" class="no-at" role="tabpanel"><a class="btn btn-primary" onclick="toogleAtLines(' + lastP + ')" title="See/hide -at- lines"><i class="material-icons">add_circle</i></a></div>');
         }
-        $('#collapse' + lastP).append(data + '<br/>');
+        $('#collapse' + lastP).append('<span ' + (data.startsWith('&emsp;at') ? 'class="at-line"' : '') + '>' + data + '</span><br ' + (data.startsWith('&emsp;at') ? 'class="at-line"' : '') + '/>');
       }
 
     } else {

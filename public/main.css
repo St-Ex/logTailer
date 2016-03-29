@@ -9,6 +9,9 @@ p {
   margin: 0 0 4px 0;
   padding: 0 5px 0 5px;
 }
+.no-at .at-line {
+  display: none;
+}
 .material-icons {
   vertical-align: middle;
 }

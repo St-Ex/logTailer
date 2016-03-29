@@ -1,5 +1,8 @@
 'use strict';
 
+/*globals __dirname:false */
+/*globals require:false */
+
 var http = require('http'),
   Io = require('socket.io'),
   fs = require('fs'),
@@ -65,6 +68,7 @@ loadConf(function(file) {
 });
 
 app.use('/public', express.static(__dirname + '/public'));
+app.use('/lib', express.static(__dirname + '/node_modules'));
 
 app.get('/', function(req, res) {
   res.sendFile('./public/index.html', {

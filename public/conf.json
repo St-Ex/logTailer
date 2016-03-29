@@ -1,5 +1,14 @@
 {
   "envs": [{
+    "name": "Localhost",
+    "host": "http://localhost:9020",
+    "files": [{
+      "name": "Log applicatif",
+      "url": "/LOCAL/LOG",
+      "filePath": "C:\\tmp\\indigo.log",
+      "log4j": true
+    }]
+  }, {
     "name": "Int. Cont.",
     "host": "http://10.238.102.34:9020",
     "files": [{
