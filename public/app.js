@@ -99,7 +99,7 @@ function logReg(newRegex) {
 }
 
 function initEnvs() {
-  $.get(location.protocol + '//' + location.host + '/public/conf.json', function(data, status) {
+  $.get(location.protocol + '//' + location.host + '/conf.json', function(data, status) {
     var envs = data.envs,
       n_env = 0;
     envs.forEach(function(env) {
