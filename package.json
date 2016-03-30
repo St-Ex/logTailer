@@ -5,7 +5,7 @@
   "author": {
     "name": "Thomas de Saint-Exupéry"
   },
-  "version": "0.0.2",
+  "version": "0.1.0",
   "main": "logTailer",
   "engines": {
     "node": ">= 4.4.0"
