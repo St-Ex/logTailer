@@ -3,3 +3,5 @@ public/bower_components
 .idea
 *.iml
 *.log
+*.tgz
+dist

@@ -1,9 +1,10 @@
 {
+  "name": "LogTailer",
+  "description": "Use node to expose tailed files",
+  "license": "SEE LICENSE IN LICENSE",
   "author": {
     "name": "Thomas de Saint-Exupéry"
   },
-  "name": "LogTailer",
-  "description": "Use node to expose tailed files",
   "version": "0.0.2",
   "main": "logTailer",
   "engines": {
@@ -18,5 +19,21 @@
     "tail": "^0.4.0",
     "toastr": "^2.1.2"
   },
-  "devDependencies": {}
+  "bundledDependencies": [
+    "body-parser",
+    "bootstrap-material-design",
+    "express",
+    "forever",
+    "socket.io",
+    "tail",
+    "toastr"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/St-Ex/logTailer.git"
+  },
+  "scripts": {
+    "start": "node ./logTailers.js",
+    "dist": "node ./scripts/dist.js"
+  }
 }

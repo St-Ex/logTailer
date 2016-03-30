@@ -67,8 +67,8 @@ loadConf(function(file) {
   });
 });
 
-app.use('/public', express.static(__dirname + '/public'));
-app.use('/lib', express.static(__dirname + '/node_modules'));
+app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/node_modules'));
 
 app.get('/', function(req, res) {
   res.sendFile('./public/index.html', {
