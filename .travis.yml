@@ -13,4 +13,5 @@ deploy:
   file: "LogTailer*.tgz"
   skip_cleanup: true
   on:
+    tags : true
     repo: St-Ex/logTailer
